@@ -5,11 +5,10 @@ import {Context} from "../index";
 import {Header} from "../components/Header";
 import {SideBar} from "../components/SideBar";
 import {findUsers} from "../http/userAPI";
-import {avatarPicture} from "../App";
+import {avatarPicture, stompClient} from "../App";
 import dayjs from "dayjs";
 import {allMessagesInChat, allUserDialogs, doRequest, removeMessage, updateMessage} from "../http/messagesAPI";
 import {Message} from "../components/Message";
-import {stompClient} from "./Login";
 
 require('dayjs/locale/es')
 var relativeTime = require('dayjs/plugin/relativeTime')
@@ -37,8 +36,10 @@ export const ChatPage = () => {
     }, []);
 
     const loadDialogs = () => {
+        setLoading(true)
         setTimeout(() => {
             allUserDialogs().then(data => {
+                console.log(data.data)
                 setChatUsers(data.data)
             }).catch()
                 .finally(() => {
@@ -65,7 +66,6 @@ export const ChatPage = () => {
 
         })
         loadDialogs()
-
     }
 
 
@@ -259,7 +259,7 @@ export const ChatPage = () => {
     return (<div>
         <Header/>
 
-        <SideBar active={"Chat page"}/>
+        <SideBar/>
 
         <main id="main" className="main">
 
@@ -337,19 +337,19 @@ export const ChatPage = () => {
                                                                         <span
                                                                             className="text-center">Для начала общения найдите пользователя по нику</span>
                                                                         </div>}
-                                                                        {searchUsersList && searchUsersList.map(searhUser => {
+                                                                        {searchUsersList && searchUsersList.map(searchUser => {
                                                                             return (
                                                                                 <li className="p-2 border-bottom border-top"
-                                                                                    key={searhUser.id}>
+                                                                                    key={searchUser.id}>
                                                                                     <NavLink
-                                                                                        onClick={() => chatHandler(searhUser)}
+                                                                                        onClick={() => chatHandler(searchUser)}
                                                                                         to="#"
                                                                                         className="d-flex justify-content-between align-items-center">
                                                                                         <div
                                                                                             className="d-flex flex-row">
                                                                                             <div>
                                                                                                 <img
-                                                                                                    src={avatarPicture(searhUser)}
+                                                                                                    src={avatarPicture(searchUser)}
                                                                                                     style={{
                                                                                                         height: '60px',
                                                                                                         width: '60px'
@@ -361,13 +361,13 @@ export const ChatPage = () => {
                                                                                             </div>
                                                                                             <div
                                                                                                 className="pt-1">
-                                                                                                <p className="fw-bold mb-0">{searhUser.username}</p>
+                                                                                                <p className="fw-bold mb-0">{searchUser.username}</p>
                                                                                                 <p className="small text-muted">Перейти
                                                                                                     в диалог</p>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div className="pt-1">
-                                                                                            <p className="small text-muted mb-1">{checkTime(searhUser.lastOnline)}</p>
+                                                                                            <p className="small text-muted mb-1">{checkTime(searchUser.lastOnline)}</p>
                                                                                         </div>
                                                                                     </NavLink></li>)
                                                                         })}
@@ -380,7 +380,7 @@ export const ChatPage = () => {
                                                                         {chatUsers && (!searchUsersList || searchLine === '') && chatUsers.map(message => {
                                                                             if (message.sender.id === user.user.id) {
                                                                                 return (
-                                                                                    <li className="p-2 border-top border-bottom">
+                                                                                    <li  className="p-2 border-top border-bottom">
                                                                                         <NavLink
                                                                                             onClick={() => chatHandler(message.receiver)}
                                                                                             to="#"

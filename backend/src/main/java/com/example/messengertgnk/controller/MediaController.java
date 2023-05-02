@@ -19,13 +19,16 @@ public class MediaController {
     private MediaService mediaService;
 
     @GetMapping("/{id}")
-    private ResponseEntity<?> getImageById(@PathVariable Long id) {
+    public ResponseEntity<?> getImageById(@PathVariable Long id) {
         Media image = mediaService.findMediaById(id).orElse(null);
-        return ResponseEntity.ok()
+        if (image != null) return ResponseEntity.ok()
                 .header("fileName", image.getOriginalFileName())
                 .contentType(MediaType.valueOf(image.getMediaType()))
                 .contentLength(image.getSize())
                 .body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

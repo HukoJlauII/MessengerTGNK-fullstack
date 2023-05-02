@@ -74,7 +74,7 @@ export const AdminPage = () => {
                                             <tbody>
                                             {users.map(user => {
                                                 return (
-                                                    <tr>
+                                                    <tr className="align-items-center">
                                                         <td scope="col"><img src={avatarPicture(user)}
                                                                              style={{height: '50px', width: '50px'}}
                                                                              alt="Profile"

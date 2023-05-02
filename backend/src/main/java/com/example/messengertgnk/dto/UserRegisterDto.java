@@ -1,18 +1,18 @@
 package com.example.messengertgnk.dto;
 
-import com.example.messengertgnk.entity.Role;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * A DTO for the {@link com.example.messengertgnk.entity.User} entity
  */
 @Data
+@Builder
 public class UserRegisterDto implements Serializable {
     @NotBlank(message = "Поле не должно быть путсым")
     private final String name;
@@ -30,6 +30,5 @@ public class UserRegisterDto implements Serializable {
     private final String password;
 
     private final String passwordConfirm;
-    private final Set<Role> roles;
 
 }

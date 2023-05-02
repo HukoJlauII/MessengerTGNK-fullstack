@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MessengerTGNK-fullstack.iml" filepath="$PROJECT_DIR$/.idea/MessengerTGNK-fullstack.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MessengerTGNK.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MessengerTGNK.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MessengerTGNK.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MessengerTGNK.test.iml" />
     </modules>
   </component>
 </project>

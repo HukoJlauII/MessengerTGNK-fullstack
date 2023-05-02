@@ -25,6 +25,13 @@ export const SideBar = () => {
                         <span>Личный кабинет</span>
                     </NavLink>
                 </li>
+                <li className="nav-item">
+                    <NavLink className={location.pathname === '/contact' ? 'nav-link' : 'nav-link collapsed'}
+                             to="/contact">
+                        <i className="bi bi-envelope"></i>
+                        <span>Контактная информация</span>
+                    </NavLink>
+                </li>
                 {user.isAdmin &&
                     <li className="nav-item">
                         <NavLink className={location.pathname === '/admin' ? 'nav-link' : 'nav-link collapsed'}

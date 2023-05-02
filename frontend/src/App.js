@@ -6,24 +6,28 @@ import './assets/css/style.css'
 import "./assets/js/main.js"
 import "./assets/css/chat.css"
 import "./assets/vendor/bootstrap-icons/bootstrap-icons.css"
-import {info} from "./http/userAPI";
+import {getToken, info} from "./http/userAPI";
 import {Context} from "./index";
-import {ChatPage} from "./pages/ChatPage";
-import {Login} from "./pages/Login";
-import {Register} from "./pages/Register";
 import {observer} from "mobx-react-lite";
-import UserProfile from "./pages/UserProfile";
 import ReactLoading from "react-loading"
-import {ErrorPage} from "./pages/ErrorPage";
 import {AdminPage} from "./pages/AdminPage";
 import 'dayjs/locale/ru'
 import dayjs from "dayjs";
+import {authRoutes, publicRoutes} from "./routes";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 
 
-
 dayjs.locale('ru')
+export var stompClient
+export var Sock
+
+export function setSocketConnection(username) {
+    Sock = new SockJS('http://localhost:8080/chat');
+    stompClient = over(Sock);
+    stompClient.connect({'user': username}, setTimeout(() => {
+    }, 500));
+}
 
 export const avatarPicture = (userWithAvatar) => {
     if (userWithAvatar.avatar) {
@@ -41,7 +45,8 @@ const App = observer(() => {
             info().then(data => {
                 user.setUser(data.data);
                 user.setIsAuth(true);
-
+                setSocketConnection(data.data.username)
+                console.log(getToken())
             }).catch()
                 .finally(() => setLoading(false))
         },);
@@ -57,14 +62,16 @@ const App = observer(() => {
             <div className="App">
                 <BrowserRouter>
                     <Routes>
-                        {!user.isAuth && <Route path={"*"} Component={Login}/>}
-                        {user.isAuth && <Route path={"*"} Component={ErrorPage}/>}
-                        {user.isAuth && <Route path="/" Component={ChatPage}/>}
-                        {user.isAuth && <Route path="/home" Component={ChatPage}/>}
-                        {user.isAuth && <Route path="/profile" Component={UserProfile}/>}
+                        {/*{!user.isAuth && <Route path={"*"} Component={Login}/>}*/}
+                        {/*{user.isAuth && <Route path={"*"} Component={ErrorPage}/>}*/}
+                        {/*{user.isAuth && <Route path="/" Component={ChatPage}/>}*/}
+                        {/*{user.isAuth && <Route path="/home" Component={ChatPage}/>}*/}
+                        {/*{user.isAuth && <Route path="/profile" Component={UserProfile}/>}*/}
+                        {!user.isAuth && publicRoutes.map(({path, Component}) => <Route path={path}
+                                                                                        Component={Component}/>)}
+                        {user.isAuth && authRoutes.map(({path, Component}) => <Route path={path}
+                                                                                     Component={Component}/>)}
                         {user.isAdmin && <Route path="/admin" Component={AdminPage}/>}
-                        <Route path={"/login"} Component={Login}/>
-                        <Route path={"/register"} Component={Register}/>
                     </Routes>
                 </BrowserRouter>
             </div>

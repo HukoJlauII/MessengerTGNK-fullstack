@@ -3,7 +3,8 @@ import logo from "../assets/img/logo.png";
 import dayjs from "dayjs";
 import {useContext} from "react";
 import {Context} from "../index";
-import {Sock} from "../pages/Login";
+import {Sock} from "../App";
+
 
 
 export const Header = () => {
@@ -13,7 +14,6 @@ export const Header = () => {
         user.setUser({})
         user.setIsAuth(false)
         Sock.close()
-
     }
     return (
         <header id="header" className="header fixed-top d-flex align-items-center">

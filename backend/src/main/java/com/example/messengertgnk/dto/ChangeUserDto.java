@@ -1,6 +1,8 @@
 package com.example.messengertgnk.dto;
 
 import com.example.messengertgnk.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,8 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChangeUserDto implements Serializable {
     @NotBlank(message = "Поле не может быть пустым")
     @Size(min = 3, message = "Никнейм не может содержать менее 3-ёх символов")

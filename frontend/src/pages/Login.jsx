@@ -7,11 +7,8 @@ import {observer} from "mobx-react-lite";
 import {useContext, useState} from "react";
 import {Context} from "../index";
 import {login} from "../http/userAPI";
-import SockJS from "sockjs-client";
-import {over} from "stompjs";
+import {setSocketConnection} from "../App";
 
-export var stompClient
-export let Sock
 export const Login = observer(() => {
     const {user} = useContext(Context)
     const [username, setUsername] = useState();
@@ -21,26 +18,21 @@ export const Login = observer(() => {
     const [loading, setLoading] = useState(false);
 
 
-
     const signIn = async () => {
-        let response
-        try {
-            setLoading(true)
-            response = await login(username, password)
-            user.setUser(response.user)
-            setLoading(false)
-            user.setIsAuth(true)
-            Sock = new SockJS('http://localhost:8080/chat');
-            stompClient = over(Sock);
-            stompClient.connect({'user': response.user.username}, setTimeout(() => {
-            }, 500));
-            navigate('/home')
-        } catch (e) {
-            setLoading(false)
+        setLoading(true)
+        await login(username, password).then((res) => {
+                user.setUser(res.user)
+                user.setIsAuth(true)
+                setSocketConnection(res.user.username)
+                navigate('/home')
+            }
+        ).catch(e => {
+            console.log(e)
             setPasswordError('Неверное имя пользователя или пароль')
-        }
-
+        }).finally(() => setLoading(false))
     }
+
+
     return (
         <div>
             <main>

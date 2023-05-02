@@ -113,11 +113,11 @@ public class UserService implements UserDetailsService {
         } else {
             registerUser(userRegisterDto);
             String token = jwtUtil.generateToken(userRegisterDto.getUsername());
-            return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.CREATED);
         }
     }
 
-    public void registerUser(UserRegisterDto userRegisterDto) {
+    public User registerUser(UserRegisterDto userRegisterDto) {
         User user = User.builder()
                 .name(userRegisterDto.getName())
                 .surname(userRegisterDto.getSurname())
@@ -128,7 +128,7 @@ public class UserService implements UserDetailsService {
                 .registrationDate(LocalDate.now())
                 .lastOnline(LocalDateTime.now())
                 .build();
-        save(user);
+        return save(user);
     }
 
     public ResponseEntity<?> loginUser(CredentialsDto credentialsDto) {

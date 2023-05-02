@@ -17,6 +17,7 @@ services:
       - "8080:8080"
 
   frontend:
+    image: 'messengertgnk-frontend'
     build:
       context: ./frontend
     container_name: front
@@ -29,6 +30,8 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - backend
+    environment:
+      - REACT_APP_API_URL=http://backend:8080
 
   postgres:
     container_name: postgres

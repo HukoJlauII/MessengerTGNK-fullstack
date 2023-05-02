@@ -50,13 +50,12 @@ public class JWTUtil {
     }
 
     public String generateToken(String username) {
-
         return Jwts.builder()
                 .setIssuer(appName)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, secretKey) //TODO: Убрать exception в этом месте
+                .signWith(SIGNATURE_ALGORITHM, secretKey)
                 .compact();
     }
 

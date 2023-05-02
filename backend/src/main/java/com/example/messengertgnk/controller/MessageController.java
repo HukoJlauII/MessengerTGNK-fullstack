@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -44,7 +45,7 @@ public class MessageController {
         User user = userService.getUserAuth(authentication);
         List<User> users = userService.findAll();
         List<Message> messages =
-                users.stream().filter((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).isPresent()).map((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).get()).toList();
+                users.stream().filter((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).isPresent()).map((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).get()).sorted(Comparator.comparing(Message::getSendTime)).toList();
         return ResponseEntity.ok(messages);
     }
 }
