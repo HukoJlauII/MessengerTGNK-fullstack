@@ -33,10 +33,10 @@ public class MessageController {
         return messageService.save(message);
     }
 
-    @MessageMapping("chat.delete/{roomId}")
-    @SendTo("/topic/{roomId}")
-    public void deleteMessage(@Payload Message message) {
-        messageService.deleteMessageById(message.getId());
+    @MessageMapping("chat.notify/{receiver}")
+    @SendTo("/topic/notifications/{receiver}")
+    public Message notifyMessage(@Payload Message message) {
+        return message;
     }
 
     @ResponseBody
@@ -45,7 +45,11 @@ public class MessageController {
         User user = userService.getUserAuth(authentication);
         List<User> users = userService.findAll();
         List<Message> messages =
-                users.stream().filter((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).isPresent()).map((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).get()).sorted(Comparator.comparing(Message::getSendTime)).toList();
+                users.stream()
+                        .filter((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).isPresent())
+                        .map((receiver) -> messageService.findMessageBySenderAndReceiverOrderBySendTime(user, receiver).get())
+                        .sorted(Comparator.comparing(Message::getSendTime))
+                        .toList();
         return ResponseEntity.ok(messages);
     }
 }
