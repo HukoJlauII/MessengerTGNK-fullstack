@@ -22,4 +22,5 @@ WORKDIR $APP_HOME
 #COPY $APP_HOME/build/libs/$ARTIFACT_NAME .
 
 EXPOSE 8080
-ENTRYPOINT exec java -jar ${APP_HOME}/${ARTIFACT_NAME}
+CMD ["sh", "-c", "java -jar $ARTIFACT_NAME"]
+#ENTRYPOINT exec java -jar ${APP_HOME}/${ARTIFACT_NAME}
