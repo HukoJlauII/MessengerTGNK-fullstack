@@ -12,15 +12,15 @@
 #COPY . .
 #RUN gradle clean build
 
-FROM amazoncorretto:17
+FROM eclipse-temurin:17-jdk-alpine
 ENV ARTIFACT_NAME=MessengerTGNK-0.0.1-SNAPSHOT.jar
+VOLUME /tmp
 ENV APP_HOME=/usr/app/
 
 COPY MessengerTGNK-0.0.1-SNAPSHOT.jar $APP_HOME
 
 WORKDIR $APP_HOME
 #COPY $APP_HOME/build/libs/$ARTIFACT_NAME .
-
+ENTRYPOINT ["java", "-jar" ,"${ARTIFACT_NAME}"]
 EXPOSE 8080
-CMD ["sh", "-c", "java -jar $ARTIFACT_NAME"]
-#ENTRYPOINT exec java -jar ${APP_HOME}/${ARTIFACT_NAME}
+#CMD ["sh", "-c", "java -jar $ARTIFACT_NAME"]
