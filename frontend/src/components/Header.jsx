@@ -3,7 +3,7 @@ import logo from "../assets/img/logo.png";
 import dayjs from "dayjs";
 import {useContext} from "react";
 import {Context} from "../index";
-import {Sock} from "../App";
+import {Sock, stompClient} from "../App";
 
 
 
@@ -13,6 +13,7 @@ export const Header = () => {
         localStorage.removeItem('token')
         user.setUser({})
         user.setIsAuth(false)
+        stompClient.unsubscribe('/topic/notifications/' + user.user.username)
         Sock.close()
     }
     return (

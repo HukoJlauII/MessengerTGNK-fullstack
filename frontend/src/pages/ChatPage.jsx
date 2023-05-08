@@ -43,6 +43,7 @@ export const ChatPage = () => {
                 setChatUsers(data.data)
             }).catch()
                 .finally(() => {
+                    stompClient.subscribe('/topic/notifications/' + user.user.username, onNotificationReceived)
                     setLoading(false)
                 })
         }, 200);
@@ -144,11 +145,11 @@ export const ChatPage = () => {
         const message = JSON.parse(payload.body)
         chatArea = document.querySelector('#chatRoom')
         setMessages(prevState => [message, ...prevState])
-        // setChatUsers(prevState => {
-        //     prevState[prevState.indexOf(prevState.find(item => item.receiver.id === message.receiver.id))] = message
-        //     return prevState
-        // })
         setTimeout(() => chatArea.scrollTop = chatArea.scrollHeight,)
+        loadDialogs()
+    }
+    const onNotificationReceived = (payload) => {
+        const message = JSON.parse(payload.body)
         loadDialogs()
     }
 
@@ -186,8 +187,8 @@ export const ChatPage = () => {
             } else {
                 stompClient.send('/chat.send/' + receiver.username + '/' + user.user.username, {}, JSON.stringify(chatMessage))
             }
+            stompClient.send('/chat.notify/' + receiver.username, {}, JSON.stringify(chatMessage))
             setMessageText('')
-
         }
     }
 
@@ -380,7 +381,7 @@ export const ChatPage = () => {
                                                                         {chatUsers && (!searchUsersList || searchLine === '') && chatUsers.map(message => {
                                                                             if (message.sender.id === user.user.id) {
                                                                                 return (
-                                                                                    <li  className="p-2 border-top border-bottom">
+                                                                                    <li className="p-2 border-top border-bottom">
                                                                                         <NavLink
                                                                                             onClick={() => chatHandler(message.receiver)}
                                                                                             to="#"
@@ -490,7 +491,6 @@ export const ChatPage = () => {
 
                                                                         </div> :
                                                                         <div className="border-bottom mb-1">
-
                                                                             <div
                                                                                 className="card-header d-flex align-items-center justify-content-between">
                                                                                 <div className="row flex-fill"><h5

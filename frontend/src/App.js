@@ -2,10 +2,10 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import "bootstrap-icons/font/bootstrap-icons.css";
 import './assets/css/style.css'
 import "./assets/js/main.js"
 import "./assets/css/chat.css"
-import "./assets/vendor/bootstrap-icons/bootstrap-icons.css"
 import {getToken, info} from "./http/userAPI";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
