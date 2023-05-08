@@ -12,7 +12,7 @@
 #COPY . .
 #RUN gradle clean build
 
-FROM openjdk:17-ea-3-jdk-slim
+FROM openjdk:11-jdk-slim
 ENV ARTIFACT_NAME=MessengerTGNK-0.0.1-SNAPSHOT.jar
 ENV APP_HOME=/usr/app/
 
