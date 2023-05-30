@@ -26,7 +26,6 @@ export function Register() {
         await registration(name, surname, username, email, password, passwordConfirm)
             .then((res) => {
                     navigate('/login')
-                    console.log(res)
                 }
             )
             .catch((err) => {

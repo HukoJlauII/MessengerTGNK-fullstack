@@ -16,7 +16,7 @@ export const AdminPage = () => {
         setTimeout(() => {
             allUsers().then(data => {
                 setUsers(data.data._embedded.users)
-                console.log(data.data._embedded.users)
+
             }).finally(() => setLoading(false))
         },);
     }, [])

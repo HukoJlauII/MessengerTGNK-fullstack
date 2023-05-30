@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class MessageController {
     @Autowired
     private MessageService messageService;

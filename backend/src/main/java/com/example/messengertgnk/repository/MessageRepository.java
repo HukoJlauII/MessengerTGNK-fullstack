@@ -15,7 +15,7 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "messages", path = "messages")
 @Repository
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @RestResource(path = "/messagesInDialog")

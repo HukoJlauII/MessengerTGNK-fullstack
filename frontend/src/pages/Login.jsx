@@ -27,7 +27,6 @@ export const Login = observer(() => {
                 navigate('/home')
             }
         ).catch(e => {
-            console.log(e)
             setPasswordError('Неверное имя пользователя или пароль')
         }).finally(() => setLoading(false))
     }

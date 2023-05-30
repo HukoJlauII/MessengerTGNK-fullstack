@@ -6,7 +6,6 @@ import {Context} from "../index";
 import {Sock, stompClient} from "../App";
 
 
-
 export const Header = () => {
     const {user} = useContext(Context)
     const logoutUser = () => {

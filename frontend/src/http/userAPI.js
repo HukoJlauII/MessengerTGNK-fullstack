@@ -9,7 +9,7 @@ export const registration = async (name, surname, username, email, password, pas
 export const login = async (username, password) => {
     const {data} = await $host.post('auth/login', {username, password})
     localStorage.setItem('token', data.token)
-    console.log(getToken())
+
     return data
 }
 

@@ -8,7 +8,7 @@ export const Contact = () => {
     return (
         <div>
             <Header/>
-            <SideBar />
+            <SideBar/>
             <main id="main" className="main">
 
                 <div className="pagetitle">

@@ -18,7 +18,7 @@ export const allMessagesInChat = async (sender, receiver, page) => {
 }
 
 export const updateMessage = async (message) => {
-    console.log(message)
+
     return axios({
         method: 'PUT',
         url: `${process.env.REACT_APP_API_URL}messages/` + message.id,

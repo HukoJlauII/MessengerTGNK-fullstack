@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import './assets/css/style.css'
 import "./assets/js/main.js"
 import "./assets/css/chat.css"
-import {getToken, info} from "./http/userAPI";
+import {info} from "./http/userAPI";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 import ReactLoading from "react-loading"
@@ -46,7 +46,7 @@ const App = observer(() => {
                 user.setUser(data.data);
                 user.setIsAuth(true);
                 setSocketConnection(data.data.username)
-                console.log(getToken())
+
             }).catch()
                 .finally(() => setLoading(false))
         },);

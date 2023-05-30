@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/profile")
 public class UserController {

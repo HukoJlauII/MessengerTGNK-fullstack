@@ -12,9 +12,9 @@ import {Message} from "../components/Message";
 
 require('dayjs/locale/es')
 var relativeTime = require('dayjs/plugin/relativeTime')
-
 dayjs.extend(relativeTime)
-
+var isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
+dayjs.extend(isSameOrAfter)
 export const ChatPage = () => {
     const {user} = useContext(Context)
 
@@ -39,7 +39,6 @@ export const ChatPage = () => {
         setLoading(true)
         setTimeout(() => {
             allUserDialogs().then(data => {
-                console.log(data.data)
                 setChatUsers(data.data)
             }).catch()
                 .finally(() => {
@@ -109,7 +108,7 @@ export const ChatPage = () => {
 
 
     const updateMessages = async (e) => {
-        if (lastResponse._links.next && e.target.getBoundingClientRect().y - e.target.lastChild.getBoundingClientRect().y === -32) {
+        if (lastResponse._links.next && e.target.getBoundingClientRect().y - e.target.lastChild.getBoundingClientRect().y === -15.25) {
             let lastEl = e.target.lastChild
             await doRequest(lastResponse._links.next.href).then(res => {
                 setLastResponse(res.data)
@@ -534,10 +533,25 @@ export const ChatPage = () => {
                                                                   onScroll={updateMessages}
                                                             >
 
-                                                                {messages?.map((message) => {
-                                                                    return <Message message={message}
-                                                                                    isSender={message.sender.id === user.user.id}
-                                                                                    onClick={(e) => selectMessage(e, message)}/>
+                                                                {messages?.map((message, index) => {
+                                                                    if (!dayjs(messages[index + 1]?.sendTime).isSame(dayjs(message.sendTime), "day") || index == messages.length) {
+                                                                        return <div className="row">
+                                                                            <span
+                                                                                className="mx-auto badge bg-secondary col-auto mb-3 ">
+                                                                                {dayjs(message?.sendTime).format('D MMMM')}
+                                                                            </span>
+                                                                            <Message message={message}
+                                                                                     isSender={message.sender.id === user.user.id}
+                                                                                     onClick={(e) => selectMessage(e, message)}/>
+
+                                                                        </div>
+                                                                    } else {
+                                                                        return <Message message={message}
+                                                                                        isSender={message.sender.id === user.user.id}
+                                                                                        onClick={(e) => selectMessage(e, message)}/>
+                                                                    }
+
+
                                                                 })}
                                                             </div>}
 
@@ -574,7 +588,8 @@ export const ChatPage = () => {
                                                                              onClick={sendMessage}
                                                                     ><i
                                                                         className="fas fa-paper-plane"></i></NavLink>
-                                                                </div>}
+                                                                </div>
+                                                            }
                                                             {messages &&
                                                                 <div id="editInputArea"
                                                                      className="text-muted justify-content-start align-items-center pe-3 pt-3 mt-2 "
@@ -605,27 +620,29 @@ export const ChatPage = () => {
                                                                         className="fas fa-paper-plane"></i></NavLink>
                                                                 </div>
                                                             }
-                                                            {!messages && <div id="noChat"
-                                                                               className="col-xxl-0 col-xl-12 h-50">
+                                                            {!messages &&
+                                                                <div id="noChat"
+                                                                     className="col-xxl-0 col-xl-12 h-50">
 
-                                                                <div>
+                                                                    <div>
 
 
-                                                                    <div className="card-body ">
+                                                                        <div className="card-body ">
 
-                                                                        <div
-                                                                            className=" row card-body align-items-center justify-content-around"
-                                                                            style={{height: '600px'}}>
+                                                                            <div
+                                                                                className=" row card-body align-items-center justify-content-around"
+                                                                                style={{height: '600px'}}>
                                                                         <span
                                                                             className="text-center">Выберите диалог...</span>
+                                                                            </div>
+
                                                                         </div>
 
                                                                     </div>
 
+
                                                                 </div>
-
-
-                                                            </div>}
+                                                            }
                                                         </div>
 
                                                     </div>
@@ -643,7 +660,8 @@ export const ChatPage = () => {
 
                 </div>
             </section>
-            {messages &&
+            {
+                messages &&
                 <div className="modal fade" id="smallModal" tabIndex="-1" style={{display: 'none'}}
                      aria-hidden="true">
                     <div className="modal-dialog modal-sm">
@@ -691,10 +709,13 @@ export const ChatPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>}
+                </div>
+            }
 
         </main>
         <Footer/>
-        {/*<BackToTop/>*/}
-    </div>);
+        {/*<BackToTop/>*/
+        }
+    </div>)
+        ;
 }
