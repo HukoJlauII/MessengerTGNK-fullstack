@@ -534,7 +534,7 @@ export const ChatPage = () => {
                                                             >
 
                                                                 {messages?.map((message, index) => {
-                                                                    if (!dayjs(messages[index + 1]?.sendTime).isSame(dayjs(message.sendTime), "day") || index == messages.length) {
+                                                                    if (!dayjs(messages[index + 1]?.sendTime).isSame(dayjs(message.sendTime), "day") || index === messages.length) {
                                                                         return <div className="row">
                                                                             <span
                                                                                 className="mx-auto badge bg-secondary col-auto mb-3 ">

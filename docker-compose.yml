@@ -5,7 +5,7 @@ services:
     image: 'messengertgnk-backend'
     build:
       context: ./backend
-    container_name: backend
+    container_name: backend-glushko
     depends_on:
       - postgres
     environment:
@@ -14,27 +14,27 @@ services:
       - SPRING_DATASOURCE_PASSWORD=251323Nn
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-      - "8080:8080"
+      - "9992:8080"
 
   client-glushko:
     image: 'messengertgnk-frontend'
     build:
       context: ./frontend
-    container_name: front
+    container_name: front-glushko
     stdin_open: true
     restart: always
     ports:
-      - "3000:3000"
+      - "1002:3000"
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - backend
     environment:
-      - REACT_APP_API_URL=http://server-glushko:9992
+      - REACT_APP_API_URL=http://45.94.116.38:9992
 
   postgres-glushko:
-    container_name: postgres
+    container_name: postgres-glushko
     image: 'postgres:14'
     environment:
       - POSTGRES_DB=messenger
@@ -44,8 +44,6 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./backend/src/main/resources/sql:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
     deploy:
       resources:
         limits:
@@ -53,25 +51,6 @@ services:
           memory: 4G
 
     restart: unless-stopped
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "polosatay_zebra@mail.ru"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 1G
 
 volumes:
   postgres-data:

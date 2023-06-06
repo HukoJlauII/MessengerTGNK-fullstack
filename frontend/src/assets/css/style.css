@@ -1,4 +1,6 @@
-
+iframe {
+    display: none;
+}
 :root {
     scroll-behavior: smooth;
 }
