@@ -32,7 +32,7 @@ export const updateMessage = async (message) => {
 export const removeMessage = async (message) => {
     return axios({
         method: 'DELETE',
-        url: `${process.env.REACT_APP_API_URL}pi/messages/` + message.id,
+        url: `${process.env.REACT_APP_API_URL}messages/` + message.id,
         data: message,
         headers: {
             'Authorization': 'Bearer ' + getToken()
