@@ -33,7 +33,7 @@ export default class UserStore {
 
     get avatarPicture() {
         if (this._user.avatar) {
-            return "http://localhost:8080/api/media/" + this._user.avatar.id
+            return "https://messengertgnk-backend.onrender.com/api/media/" + this._user.avatar.id
         } else {
             return "https://bootdey.com/img/Content/avatar/avatar6.png"
         }

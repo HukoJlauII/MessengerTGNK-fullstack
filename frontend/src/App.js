@@ -23,7 +23,7 @@ export var stompClient
 export var Sock
 
 export function setSocketConnection(username) {
-    Sock = new SockJS('http://localhost:8080/chat');
+    Sock = new SockJS('https://messengertgnk-backend.onrender.com/chat');
     stompClient = over(Sock);
     stompClient.connect({'user': username}, setTimeout(() => {
     }, 500));
@@ -31,7 +31,7 @@ export function setSocketConnection(username) {
 
 export const avatarPicture = (userWithAvatar) => {
     if (userWithAvatar.avatar) {
-        return "http://localhost:8080/api/media/" + userWithAvatar.avatar.id
+        return "https://messengertgnk-backend.onrender.com/api/media/" + userWithAvatar.avatar.id
     } else {
         return "https://bootdey.com/img/Content/avatar/avatar6.png"
     }
